@@ -2,6 +2,7 @@ package basic.JDBC_EmployeePayrollService_day33;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,6 +10,35 @@ import java.sql.Statement;
 public class EmployeePayrollServiceJDBC {
 
 	public static void main(String[] args) {
+		connectionEshtablished();
+		readEmployeePayroll();
+		updateEmployeePayroll();
+
+	}
+
+	private static Connection getSqlConnection() {
+		Connection conn = null;
+		String dbHostUrl = "jdbc:mysql://localhost:3306/payroll_service";
+		String userName = "root";
+		String password = "Md78678678.";
+		try {
+			conn = DriverManager.getConnection(dbHostUrl, userName, password);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return conn;
+
+	}
+
+	private static void connectionEshtablished() {
+		Connection conn = getSqlConnection();
+		if (conn != null) {
+			System.out.println("Connection is eshtablished");
+		}
+	}
+
+	private static void readEmployeePayroll() {
 		Connection conn = getSqlConnection();
 
 		try {
@@ -44,19 +74,22 @@ public class EmployeePayrollServiceJDBC {
 
 	}
 
-	private static Connection getSqlConnection() {
-		Connection conn = null;
-		String dbHostUrl = "jdbc:mysql://localhost:3306/payroll_service";
-		String userName = "root";
-		String password = "Md78678678.";
-		try {
-			conn = DriverManager.getConnection(dbHostUrl, userName, password);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return conn;
+	private static void updateEmployeePayroll() {
+		Connection conn = getSqlConnection();
+		if (conn != null) {
+			String updateEmpPayroll = "UPDATE employee_payroll SET salary = ? WHERE name ='Terisa'";
+			try {
+				PreparedStatement preparedStatement = conn.prepareStatement(updateEmpPayroll);
+				preparedStatement.setInt(1, 300000);
+				int rowUpdated = preparedStatement.executeUpdate();
+				if (rowUpdated > 0) {
+					System.out.println("Data is Updated");
+				}
+			} catch (SQLException e) {
 
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
