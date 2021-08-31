@@ -15,7 +15,7 @@ public class EmployeePayrollServiceJDBC {
 		updateEmployeePayroll();
 		showPayrollDataByName();
 		showEmployeesJoinedBetweenDate();
-		findingMinMaxSumAvgCountOfFemailes();
+		findingMinMaxSumAvgCountOfMalesAndFemales();
 		insertNewEmployee();
 	}
 
