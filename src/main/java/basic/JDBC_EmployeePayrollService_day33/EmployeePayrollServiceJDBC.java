@@ -14,7 +14,9 @@ public class EmployeePayrollServiceJDBC {
 		readEmployeePayroll();
 		updateEmployeePayroll();
 		showPayrollDataByName();
-
+		showEmployeesJoinedBetweenDate();
+		findingMinMaxSumAvgCountOfFemailes();
+		insertNewEmployee();
 	}
 
 	private static Connection getSqlConnection() {
@@ -106,7 +108,7 @@ public class EmployeePayrollServiceJDBC {
 	}
 
 	private static void showPayrollDataByName() {
-		System.out.println("Displaying payroll data by name");
+		System.out.println("Displaying payroll data by particular name");
 		Connection conn = getSqlConnection();
 
 		try {
@@ -136,6 +138,111 @@ public class EmployeePayrollServiceJDBC {
 				} catch (SQLException sqlException) {
 					System.out.println(sqlException.getMessage());
 
+				}
+			}
+		}
+
+	}
+
+	private static void showEmployeesJoinedBetweenDate() {
+		System.out.println("Displaying employees joined between given dates");
+		Connection conn = getSqlConnection();
+
+		try {
+			if (conn != null) {
+				String readEmpPayroll = "SELECT name FROM employee_payroll WHERE startDate between '2021-08-01' and '2021-09-08'";
+
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(readEmpPayroll);
+				while (resultSet.next()) {
+
+					String name = resultSet.getString(1);
+
+					String row = String.format("User record: \n Name: %s", name);
+					System.out.println(row);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException) {
+					System.out.println(sqlException.getMessage());
+
+				}
+			}
+		}
+
+	}
+
+	private static void findingMinMaxSumAvgCountOfFemailes() {
+		System.out.println("Displaying Min,Max,sum,avg,count of Males and Females");
+		Connection conn = getSqlConnection();
+
+		try {
+			if (conn != null) {
+				String readEmpPayroll = "SELECT min(salary),max(salary),sum(salary),avg(salary),count(salary) FROM employee_payroll WHERE gender = 'M' or gender ='F' group by gender";
+
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(readEmpPayroll);
+				while (resultSet.next()) {
+
+					int minSalary = resultSet.getInt(1);
+					int maxSalary = resultSet.getInt(2);
+					int sumSalary = resultSet.getInt(3);
+					int avgSalary = resultSet.getInt(4);
+					int countSalary = resultSet.getInt(5);
+
+					String row = String.format(
+							"User record: \n MinSalary: %d, \n MaxSalary: %d,\n SumSalary: %d,\n AvgSalary: %d,\n CountSalary: %d,",
+							minSalary, maxSalary, sumSalary, avgSalary, countSalary);
+					System.out.println(row);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException) {
+					System.out.println(sqlException.getMessage());
+
+				}
+			}
+		}
+	}
+
+	private static void insertNewEmployee() {
+		System.out.println("Inserting a new employee to employee_payroll table");
+		Connection conn = getSqlConnection();
+		if (conn != null) {
+			String insertEmp = "INSERT INTO employee_payroll (id,name,salary,startDate,gender) values(?,?,?,?,?)";
+			try {
+				PreparedStatement preparedStatement = conn.prepareStatement(insertEmp);
+				preparedStatement.setInt(1, 5);
+				preparedStatement.setString(2, "Sami");
+				preparedStatement.setInt(3, 90000);
+				preparedStatement.setString(4, "2021-07-01");
+				preparedStatement.setString(5, "M");
+
+				int rowUpdated = preparedStatement.executeUpdate();
+				if (rowUpdated > 0) {
+					System.out.println("Data is Updated");
+				}
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (SQLException sqlException) {
+						System.out.println(sqlException.getMessage());
+
+					}
 				}
 			}
 		}
