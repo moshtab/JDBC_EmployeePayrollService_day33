@@ -88,7 +88,16 @@ public class EmployeePayrollServiceJDBC {
 			} catch (SQLException e) {
 
 				e.printStackTrace();
+			}finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException sqlException) {
+					System.out.println(sqlException.getMessage());
+
+				}
 			}
+		}
 		}
 	}
 
