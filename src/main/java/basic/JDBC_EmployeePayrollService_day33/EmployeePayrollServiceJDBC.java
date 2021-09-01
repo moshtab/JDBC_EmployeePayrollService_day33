@@ -15,8 +15,13 @@ public class EmployeePayrollServiceJDBC {
 		updateEmployeePayroll();
 		showPayrollDataByName();
 		showEmployeesJoinedBetweenDate();
+<<<<<<< HEAD
 		findingMinMaxSumAvgCountOfFemailes();
 		insertNewEmployeeTransaction();
+=======
+		findingMinMaxSumAvgCountOfMalesAndFemales();
+		insertNewEmployee();
+>>>>>>> 4bce229278426bebf7f8a33f5e25dcbf6f6569e5
 	}
 
 	private static Connection getSqlConnection() {
